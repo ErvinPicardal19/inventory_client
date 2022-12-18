@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react'
 import {GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter, Resize} from '@syncfusion/ej2-react-grids';
-import { DataManager, Query } from '@syncfusion/ej2/data';
 import {
   addNewCustomer,
   deleteCustomer,
@@ -8,28 +8,15 @@ import {
   getAllCustomers,
   getCustomerPageError,
   getCustomerPageStatus,
-  setCustomers,
   updateCustomer
 } from '../features/customers/customersSlice';
-import { 
-  Button, 
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  Slide,
-  DialogActions } from '@mui/material';
 
 import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import {customersData, customersGrid} from '../data/dummy';
 import { Header } from '../common/components';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 const Customers = () => {
 
@@ -45,20 +32,14 @@ const Customers = () => {
   const fetchError = useSelector(getCustomerPageError);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(fetchStatus);
-  }, [fetchStatus])
+
 
   useEffect(() => {
     const getCustomers = async() => {
        try{
-          // const response = await axiosPrivate.get('/inventory', {
-          //    signal: controller.signal
-          // });
+
           dispatch(fetchCustomers({axiosPrivate}))
-          
-          // console.log(response.data);
-          // setCategories(response.data.category);
+
        } catch(err) {
           console.error(err);
           navigate('/login', {state: {from: location}, replace: true});
@@ -70,7 +51,7 @@ const Customers = () => {
 
 
   useEffect(() => {
-    console.log(fetchedCustomers);
+
     setCustomers([...fetchedCustomers]);
 
     return () => {
@@ -79,22 +60,22 @@ const Customers = () => {
   }, [fetchedCustomers])
 
   const dataSourceChanged = async(args) => {
-    console.log(args);
+
        if(args?.requestType === 'save'){
-          console.log('Saving...');
+    
           if(!editMode){
-             // await addNewProduct(args.data);
-             console.log('Adding...');
+        
+            
              dispatch(addNewCustomer({axiosPrivate, data: args.data}));
              
 
           } else {
-             console.log('Editing...');
+            
              dispatch(updateCustomer({axiosPrivate, data: args.data}));
-             // await updateProduct(args.data);
+      
              const filteredCustomers = customers.filter((val) => val._id !== args?.data?._id)
 
-              // foundEvent = args?.data[0];
+      
               if(!filteredCustomers) {
                 setCustomers([]);
                 return;
@@ -102,13 +83,13 @@ const Customers = () => {
               
               setCustomers([...filteredCustomers, args?.data])
              setEditMode(false);
-            //  window.location.reload(false);
+       
           }
        }
  
        if(args?.requestType === 'delete'){
-          console.log('deleting...');
-          // deleteProduct(args.data);
+     
+    
           dispatch(deleteCustomer({axiosPrivate, data: args.data}));
        }
    }

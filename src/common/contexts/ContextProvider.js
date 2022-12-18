@@ -16,11 +16,9 @@ export const ContextProvider = ({children}) => {
    const [currentColor, setCurrentColor] = useState('#03C9D7');
    const [currentMode, setCurrentMode] = useState('Light');
    const [themeSettings, setThemeSettings] = useState(false);
-   const [numOfProd, setNumOfProd] = useState(0);
 
 
    const setMode = (e) => {
-      console.log(e);
       setCurrentMode(e.target.value);
 
       localStorage.setItem('themeMode', e.target.value);

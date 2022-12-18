@@ -3,22 +3,16 @@ import {GoPrimitiveDot} from 'react-icons/go';
 import {Stack, Button} from '../common/components';
 import { earningData } from '../data/dummy';
 import { useStateContext } from '../common/contexts/ContextProvider';
-import { useSelector, useDispatch } from 'react-redux';
 import { socket } from '../common/api/socket';
-import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
-// import { socket } from '../common/api/socket';
 
 const Dashboard = () => {
   const {currentColor} = useStateContext();
-  const inventoryProducts = useSelector((state) => state.product.inventoryProducts.payload)
   const [itemsNo, setItemsNo] = useState({
     productNo: 0,
     customerNo: 0,
     employeesNo: 0,
     ordersNo: 0
   })
-
-  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     
@@ -31,33 +25,7 @@ const Dashboard = () => {
         setItemsNo(args);
       })
 
-      // socket.on('orderReply', (args) => {
-      //   console.log("Order: ",args);
-      //   setItemsNo({...itemsNo, ordersNo: args});
-      // })
-
-      // socket.on('customerReply', (args) => {
-      //   console.log("Customer: ",args);
-      //   setItemsNo({...itemsNo, customerNo: args});
-      // })
-
-      // socket.on('userReply', (args) => {
-      //   console.log("User: ",args);
-      //   setItemsNo({...itemsNo, employeesNo: args});
-      // })
-  
-      // socket.on('disconnect', () => {
-      //   console.log("disconnected...");
-      // });
-
-      // socket.on("dashboard", (args) => {
-      //   console.log(args);
-      // });
-
       socket.emit("update");
-      // socket.emit("order");
-      // socket.emit("customer");
-      // socket.emit("user");
 
     return () => {
       socket.off('connect');

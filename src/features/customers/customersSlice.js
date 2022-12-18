@@ -9,7 +9,6 @@ const initialState = {
 
 export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async(args) => {
    try{
-      console.log("Fetching Customer");
       const response = await args.axiosPrivate.get('/customers');
       
       return response.data;
@@ -43,13 +42,13 @@ export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async
 });
 
 export const updateCustomer = createAsyncThunk('customers/updateCustomer', async(args) => {
-   console.log(args.data);
+
    try {
       const response = await args.axiosPrivate.put(`/customers/${args.data._id}`, JSON.stringify(args.data));
-      console.log(response);
+
       return response;
    } catch(error) {
-      console.log(error);
+
       return error.message;
    }
 });
@@ -60,7 +59,7 @@ export const customersSlice = createSlice({
    reducers: {
       setCustomerStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
+
             state.customer_status = action.payload;
          }
       }
@@ -72,7 +71,7 @@ export const customersSlice = createSlice({
          })
          .addCase(fetchCustomers.fulfilled, (state, action) => {
             state.customer_status = 'succeeded'
-            // console.log(action.payload.data);
+
             state.customers = action.payload.data;
          })
          .addCase(fetchCustomers.rejected, (state, action) => {
@@ -80,11 +79,11 @@ export const customersSlice = createSlice({
             state.customer_error = action.error.message;
          })
          .addCase(addNewCustomer.fulfilled, (state, action) => {
-            console.log(action.payload.data);
+
             state.customers = [...state.customers, action.payload.data]
          })
          .addCase(deleteCustomer.fulfilled, (state, action) => {
-            console.log(action.payload)
+
             action.payload.forEach((args) => {
                state.customers = state.customers.filter((val) => val._id !== args._id)
             })

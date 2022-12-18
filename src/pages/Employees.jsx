@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
-import {GridComponent, ColumnsDirective, ColumnDirective, Page, Search, Inject, Toolbar, Edit, Filter, Sort} from '@syncfusion/ej2-react-grids';
+import {GridComponent, ColumnsDirective, ColumnDirective, Page, Inject, Toolbar, Edit, Filter, Sort} from '@syncfusion/ej2-react-grids';
 import { useSelector, useDispatch } from 'react-redux';
 import {MdOutlineCancel} from 'react-icons/md';
 import { Button, Modal, Box, Divider, Badge, Avatar } from '@mui/material';
@@ -13,21 +13,17 @@ import {
   getAllEmployees,
   getEmployeePageError,
   getEmployeePageStatus,
-  updateEmployee
 } from '../features/Employee/employeeSlice';
 
 import {Header} from '../common/components';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
-import useAuth from '../common/hooks/useAuth';
 
 const Employees = () => {
 
-  const {auth} = useAuth();
   const [employeesList, setEmployeesList] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState(false);
   const [disableConfirm, setDisableConfirm] = useState(true);
   const [employeeFormData, setEmployeeFormData] = useState({
     email: "",
@@ -61,16 +57,7 @@ const Employees = () => {
 
   useEffect(() => {
     try{
-      // const response = await axiosPrivate.get('/inventory', {
-      //    signal: controller.signal
-      // });
-      // console.log(inventoryStatus);
         dispatch(fetchEmployees({axiosPrivate}));
-        // dispatch(fetchCustomers({axiosPrivate}));
-        // dispatch(fetchInventoryProducts({axiosPrivate}));
-      
-      // console.log(response.data);
-      // setCategories(response.data.category);
 
    } catch(err) {
       console.error(err);
@@ -79,14 +66,13 @@ const Employees = () => {
   }, []);
 
   useEffect(() => {
-    console.log(employees);
+
     setEmployeesList([...employees]);
   }, [employees]);
 
   useEffect(() => {
     const boolErr = Object.values(error).find((e) => e === true);
     const dataVal = Object.values(employeeFormData).find((data) => data === "") === "" ? true : false;
-    // console.log(dataVal);
     if(dataVal || boolErr){
       setDisableConfirm(true);
     }else{
@@ -118,18 +104,18 @@ const Employees = () => {
   };
 
   const registerEmployee = () => {
-    console.log("Adding...");
+
     dispatch(addNewEmployee({axiosPrivate, data: employeeFormData}));
     window.location.reload(false);
   }
 
   const onDelete = (args) => {
-    console.log(args);
+
     if(args.requestType === 'delete'){
       dispatch(deleteEmployee({axiosPrivate, data: args.data}));
       const filteredEmployees = employeesList.filter((val) => val._id !== args?.data?._id)
   
-      // console.log(filteredCustomers);
+
       if(!filteredEmployees) {
         setEmployeesList([]);
         return;
@@ -206,7 +192,6 @@ const Employees = () => {
         toolbar={['Search', 'Delete', 'Cancel']}
         width="auto"
         actionComplete={onDelete}
-        // toolbarClick={(args) => onDelete(args)}
       >
         <ColumnsDirective>
           <ColumnDirective 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react'
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject, Resize, DragAndDrop} from '@syncfusion/ej2-react-schedule';
 import {
@@ -8,13 +9,11 @@ import {
   getScheduleList,
   getScheduleStatus,
   updateSchedule,
-  setScheduleStatus
 } from '../features/schedule/scheduleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import {Header} from '../common/components';
 import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import { scheduleData } from '../data/dummy';
 
 const Calendar = () => {
 
@@ -30,13 +29,9 @@ const Calendar = () => {
 
   useEffect(() => {
     try{
-      // const response = await axiosPrivate.get('/inventory', {
-      //    signal: controller.signal
-      // });
-      // console.log(inventoryStatus);
+
       dispatch(fetchScheduleList({axiosPrivate}));
-      // console.log(response.data);
-      // setCategories(response.data.category);
+
 
    } catch(err) {
       console.error(err);
@@ -45,32 +40,27 @@ const Calendar = () => {
   }, []);
 
   useEffect(() => {
-    console.log(scheduleList);
+
     setSchedules([...scheduleList])
   }, [scheduleList]);
 
-  useEffect(() => {
-    console.log(schedules);
-  }, [schedules])
 
   const dataSourceChanged = async(args) => {
-    console.log(args);
+
       try{
         if(args?.requestType === 'eventCreated'){
-          console.log('Adding...');
+
           dispatch(addNewSchedule({axiosPrivate, data: args?.data[0]}))
-          // window.location.reload(false);
-          // setSchedules([...schedules, args?.data[0]])
-          // console.log(args?.data[0]._id);
+
        }
 
        if(args?.requestType === 'eventChanged'){
-          console.log(args?.data[0]);
+
           dispatch(updateSchedule({axiosPrivate, data: args?.data[0]}))
-          // const foundEvent = schedules.find((val) => val._id === args?.data[0]._id)
+
           const filteredSchedules = schedules.filter((val) => val.Id !== args?.data[0]?.Id)
 
-          // foundEvent = args?.data[0];
+
           if(!filteredSchedules) {
             setSchedules([]);
             return;
@@ -81,11 +71,11 @@ const Calendar = () => {
        }
 
        if(args?.requestType === 'eventRemoved'){
-          console.log('deleting...');
+
           dispatch(deleteSchedule({axiosPrivate, data: args?.data}));
           const filteredSchedules = schedules.filter((val) => val.Id !== args?.data[0].Id)
 
-          console.log(filteredSchedules);
+      
           if(!filteredSchedules) {
             setSchedules([]);
             return;

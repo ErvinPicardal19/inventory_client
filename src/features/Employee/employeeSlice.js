@@ -9,7 +9,7 @@ const initialState = {
 
 export const fetchEmployees = createAsyncThunk('employees/fetchEmployees', async(args) => {
    try{
-      console.log("Fetching employees");
+
       const response = await args.axiosPrivate.get('/employees');
       return response.data;
    }catch(error){
@@ -30,7 +30,7 @@ export const addNewEmployee = createAsyncThunk('employees/addNewEmployee', async
 
 export const deleteEmployee = createAsyncThunk('employees/deleteEmployee', async(args) => {
    try {
-      console.log(args);
+
       for(let employee of args.data){
          args.axiosPrivate.delete(`/employees/${employee._id}`)
       }
@@ -42,13 +42,13 @@ export const deleteEmployee = createAsyncThunk('employees/deleteEmployee', async
 });
 
 export const updateEmployee = createAsyncThunk('employees/updateEmployee', async(args) => {
-   console.log(args.data);
+
    try {
       const response = await args.axiosPrivate.put(`/employees/${args.data._id}`, JSON.stringify(args.data));
-      console.log(response);
+
       return response;
    } catch(error) {
-      console.log(error);
+
       return error.message;
    }
 });
@@ -59,7 +59,7 @@ export const employeeSlice = createSlice({
    reducers: {
       setEmployeeStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
+
             state.employeesStatus = action.payload;
          }
       }
@@ -71,17 +71,13 @@ export const employeeSlice = createSlice({
          })
          .addCase(fetchEmployees.fulfilled, (state, action) => {
             state.employeesStatus = 'succeeded'
-            // console.log(action.payload.data);
+ 
             state.employees = action.payload.data;
          })
          .addCase(fetchEmployees.rejected, (state, action) => {
             state.employeesStatus = 'failed'
             state.employeesError = action.error.message;
          })
-         // .addCase(addNewEmployee.fulfilled, (state, action) => {
-         //    console.log(action.payload.data);
-         //    state.employees = [...state.employees, action.payload.data]
-         // })
    }
 });
 

@@ -1,7 +1,6 @@
-import React, {useEffect,useState} from 'react';
+import React from 'react';
 import { Routes, Route,  } from 'react-router-dom';
 import {Layout, RequireAuth, PersistLogin} from '../common/components';
-import io from 'socket.io-client';
 
 import { Dashboard, Orders, Calendar, Employees, Customers, Kanban, Missing, Login, Inventory} from '../pages';
 

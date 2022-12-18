@@ -1,14 +1,13 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import {GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject, Toolbar} from '@syncfusion/ej2-react-grids';
+import {GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, Filter, Page, PdfExport, Edit, Inject, Toolbar} from '@syncfusion/ej2-react-grids';
 
 
 import { DropDownList } from '@syncfusion/ej2-react-dropdowns';
 
-import {ordersData, ordersGrid} from '../data/dummy';
 import {Header} from '../common/components';
-import { DataManager, Query } from '@syncfusion/ej2/data';
+import {  Query } from '@syncfusion/ej2/data';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   fetchOrders, 
@@ -18,19 +17,16 @@ import {
   addNewOrder,
   deleteOrder,
   updateOrder,
-  setOrderStatus
 } from '../features/orders/orderSlice'
 import {
   getAllCustomers,
   fetchCustomers,
   getCustomerPageStatus,
-  setCustomerStatus
 } from '../features/customers/customersSlice'
 import {
   getInventoryProducts,
   fetchInventoryProducts,
   getInventoryStatus,
-  setInventoryStatus,
 } from '../features/products/productSlice';
 import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -42,10 +38,8 @@ const Orders = () => {
   const location = useLocation();
   
   const [orders, setOrders] = useState([]);
-  // const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  // const [rowSelected, setRowSelected] = useState(null);
 
   const axiosPrivate = useAxiosPrivate();
   
@@ -60,16 +54,10 @@ const Orders = () => {
 
   useEffect(() => {
     try{
-      // const response = await axiosPrivate.get('/inventory', {
-      //    signal: controller.signal
-      // });
       console.log(inventoryStatus);
       dispatch(fetchOrders({axiosPrivate}));
       dispatch(fetchCustomers({axiosPrivate}));
       dispatch(fetchInventoryProducts({axiosPrivate}));
-      
-      // console.log(response.data);
-      // setCategories(response.data.category);
 
    } catch(err) {
       console.error(err);
@@ -82,7 +70,6 @@ const Orders = () => {
   }, [fetchedInventory])
 
   useEffect(() => {
-    // console.log(fetchedOrders);
     setOrders([...fetchedOrders]);
   }, [fetchedOrders])
 
@@ -97,11 +84,6 @@ const Orders = () => {
       }
   };
 
-  // const country = [
-  //   { countryName: 'United States', countryId: '1' },
-  //   { countryName: 'Australia', countryId: '2' },
-  //   { countryName: 'India', countryId: '3' }
-  // ];
   const customerSetting = {
     create : function() {
       this.element = document.createElement('input');
@@ -175,7 +157,6 @@ const Orders = () => {
           console.log('Saving...');
           if(!editMode){
             console.log('Adding...');
-             // await addNewProduct(args.data);
              dispatch(addNewOrder({axiosPrivate, data: args.data}));
           } else {
              console.log('Editing...');
@@ -183,7 +164,7 @@ const Orders = () => {
             
             const filteredOrders = orders.filter((val) => val._id !== args?.data?._id)
 
-              // foundEvent = args?.data[0];
+
               if(!filteredOrders) {
                 setOrders([]);
                 return;
@@ -196,12 +177,11 @@ const Orders = () => {
  
        if(args?.requestType === 'delete'){
           console.log('deleting...');
-          // deleteProduct(args.data);
           dispatch(deleteOrder({axiosPrivate, data: args.data}));
 
           const filteredOrders = orders.filter((val) => val._id !== args?.data?._id)
 
-          // console.log(filteredCustomers);
+
           if(!filteredOrders) {
             setOrders([]);
             return;
@@ -235,16 +215,12 @@ const Orders = () => {
         toolbar={['Search','Add', 'Edit', 'Delete', 'Update', 'Cancel', 'ExcelExport']}
       >
         <ColumnsDirective>
-          {/* {ordersGrid.map((item, index) => (
-            <ColumnDirective key={index} {...item}/>
-          ))} */}
           <ColumnDirective type='checkbox' width='50'/>
           <ColumnDirective field='product.name' headerText='Item' width='140' textAlign="Left" editType="dropDownEdit" edit={itemSettings.params()}/>
           <ColumnDirective field='customer.name' headerText='Customer Name' width='140' editType="dropDownEdit" edit={customerSetting.params()} textAlign="Left"/>
           <ColumnDirective field='customer.phone' headerText='Phone' width='140' textAlign="Left" allowEditing={false} />
           <ColumnDirective field='quantity' type='number' editType='numericedit' headerText='Quantity' width='140' textAlign="Left"/>
           <ColumnDirective field='totalPrice' headerText='Total Amount' width='140' textAlign="Left" allowEditing={false}/>
-          {/* <ColumnDirective field='countInStock' type='number' editType='numericedit'headerText='Stock' width='140' textAlign="Left"/> */}
           <ColumnDirective field='customer.location' headerText='Location' width='150' allowEditing={false} textAlign='Right'/>
         </ColumnsDirective>
         <Inject services={[Resize, Sort, Filter, Page, Edit, PdfExport, Toolbar]}/>

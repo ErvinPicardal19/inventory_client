@@ -8,7 +8,6 @@ const initialState = {
 
 export const fetchCategory = createAsyncThunk('category/fetchCategory', async(args) => {
    try{
-      console.log("Fetching Categories");
       const response = await args.axiosPrivate.get('/category');
       return response.data;
    }catch(error){
@@ -39,13 +38,12 @@ export const deleteCategory = createAsyncThunk('category/deleteCategory', async(
 });
 
 export const updateCategory = createAsyncThunk('category/updateCategory', async(args) => {
-   console.log(args.data);
    try {
       const response = await args.axiosPrivate.put(`/category/${args.data._id}`, JSON.stringify(args.data));
-      console.log(response);
+
       return response;
    } catch(error) {
-      console.log(error);
+
       return error.message;
    }
 });
@@ -56,7 +54,7 @@ export const categorySlice = createSlice({
    reducers: {
       setCategoryStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
+
             state.categoryStatus = action.payload;
          }
       }
@@ -68,7 +66,7 @@ export const categorySlice = createSlice({
          })
          .addCase(fetchCategory.fulfilled, (state, action) => {
             state.categoryStatus = 'succeeded'
-            // console.log(action.payload.data);
+
             state.category = action.payload.data;
          })
          .addCase(fetchCategory.rejected, (state, action) => {

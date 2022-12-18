@@ -5,7 +5,7 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { ColumnDirective, ColumnsDirective, ExcelExport } from '@syncfusion/ej2-react-grids';
 import { Filter, GridComponent, Inject, Page, Toolbar, Search, Edit } from '@syncfusion/ej2-react-grids';
 import { DropDownList } from '@syncfusion/ej2-dropdowns';
-import { Query, DataManager } from '@syncfusion/ej2-data';
+import { Query } from '@syncfusion/ej2-data';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,14 +17,12 @@ import {
    deleteInventoryProduct, 
    getInventoryError, 
    getInventoryStatus, 
-   fetchInventoryProducts,
-   setInventoryStatus
+   fetchInventoryProducts
 } from '../features/products/productSlice';
 
 import {
    fetchCategory,
    getAllCategory,
-   getCategoryStatus
 } from '../features/category/categorySlice';
 
 import {Header} from '../common/components';
@@ -44,7 +42,6 @@ const Inventory = () => {
 
    const [editMode, setEditMode] = useState(false);
    const [products, setProducts] = useState([]);
-   const [selectedProduct, setSelectedProduct] = useState([]);
    // const [grid, setGrid] = useState();
    // const {addNewProduct, updateProduct, deleteProduct} = useInvetoryServices();
    const navigate = useNavigate();
@@ -54,15 +51,10 @@ const Inventory = () => {
    useEffect(() => {
       const getInvetory = async() => {
          try{
-            // const response = await axiosPrivate.get('/inventory', {
-            //    signal: controller.signal
-            // });
-            console.log(inventoryStatus);
+
             dispatch(fetchInventoryProducts({axiosPrivate}))
             dispatch(fetchCategory({axiosPrivate}))
             
-            // console.log(response.data);
-            // setCategories(response.data.category);
          } catch(err) {
             console.error(err);
             navigate('/login', {state: {from: location}, replace: true});
@@ -79,44 +71,31 @@ const Inventory = () => {
       }
    }, [inventoryProducts]);
 
-   useEffect(() => {
-      console.log(category);
-   }, [category]);
-
-   useEffect(() => {
-      console.log(products);
-   }, [products]);
-
    const filterTemplate = (props) => {
-      console.log(props);
-      console.log(category);
       const data = category.map((category) => category.name);
       data.push('Clear');
       return (<DropDownListComponent id={props.column.field} popupHeight='250px' dataSource={data} change={onChange}/>);
   }
 
   const onChange = (args) => {
-      // console.log(grid);
       if (grid) {
           if (args.value === 'Clear') {
               grid.clearFiltering();
           }
           else {
-              console.log("Changed:" + args.value);
               grid.filterByColumn('categoryID.name', 'equal', args.value);
           }
       }
   }
 
   const dataSourceChanged = async(args) => {
-   console.log(args);
       if(args?.requestType === 'save'){
-         console.log('Saving...');
+
          if(!editMode){
             // await addNewProduct(args.data);
             dispatch(addNewInventoryProduct({axiosPrivate, data: args.data}));
          } else {
-            console.log('Editing...');
+
             dispatch(updateInventoryProduct({axiosPrivate, data: args.data}));
 
             if(!args.data.categoryID.name) args.data.categoryID.name = args.rowData.categoryID.name
@@ -136,13 +115,11 @@ const Inventory = () => {
       }
 
       if(args?.requestType === 'delete'){
-         console.log('deleting...');
-         // deleteProduct(args.data);
+
          dispatch(deleteInventoryProduct({axiosPrivate, data: args.data}));
 
           const filteredProducts = products.filter((val) => val._id !== args?.data?._id)
 
-          // console.log(filteredCustomers);
           if(!filteredProducts) {
             setProducts([]);
             return;
@@ -187,7 +164,6 @@ const Inventory = () => {
   }
 
   const toolbarClick = (args) => {
-   console.log(args.item.id);
    if (grid && args.item.id === 'grid_excelexport') {
        grid.excelExport();
    }
@@ -215,7 +191,6 @@ const Inventory = () => {
                toolbarClick={toolbarClick}
                actionComplete={dataSourceChanged}
                beginEdit={(args) => {
-                  setSelectedProduct(args.dataRow)
                   setEditMode(true)
                }}
                toolbar={['Search','Add', 'Edit', 'Delete', 'Update', 'Cancel', 'ExcelExport']}

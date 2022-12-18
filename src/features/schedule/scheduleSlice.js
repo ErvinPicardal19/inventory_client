@@ -11,7 +11,6 @@ export const fetchScheduleList = createAsyncThunk('schedules/fetchScheduleList',
    try{
       const response = await args.axiosPrivate.get('/schedule');
 
-      console.log(response);
 
       return response.data;
    } catch(error) {
@@ -21,12 +20,12 @@ export const fetchScheduleList = createAsyncThunk('schedules/fetchScheduleList',
 
 export const addNewSchedule = createAsyncThunk('schedules/addNewSchedule', async(args) => {
    try {
-      console.log(args.data);
+
       const response = await args.axiosPrivate.post('/schedule', JSON.stringify(args.data));
 
       return response.data;
    } catch(error) {
-      console.log(error);
+
       return error.message;
    }
 });
@@ -44,7 +43,7 @@ export const deleteSchedule = createAsyncThunk('schedules/deleteSchedule', async
 });
 
 export const updateSchedule = createAsyncThunk('schedules/updateSchedule', async(args) => {
-   console.log(args.data);
+
    try {
       const response = await args.axiosPrivate.put(`/schedule/${args.data.Id}`, JSON.stringify(args.data));
 
@@ -60,7 +59,7 @@ export const scheduleSlice = createSlice({
    reducers: {
       setScheduleStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
+
             state.scheduleStatus = action.payload;
          }
       }
@@ -72,7 +71,7 @@ export const scheduleSlice = createSlice({
          })
          .addCase(fetchScheduleList.fulfilled, (state, action) => {
             state.scheduleStatus = 'succeeded'
-            console.log(action.payload);
+        
             state.schedules = action.payload.data;
          })
          .addCase(fetchScheduleList.rejected, (state, action) => {
@@ -80,7 +79,7 @@ export const scheduleSlice = createSlice({
             state.scheduleError = action.error.message;
          })
          .addCase(addNewSchedule.fulfilled, (state, action) => {
-            console.log(action.payload.data);
+         
             state.schedules = [...state.schedules, action.payload.data]
          })
    }

@@ -80,10 +80,6 @@ function Profileform(props) {
   useEffect(() => {
     setEmployeeFormData({...employeeFormData, name: `${firstName} ${lastName}`})
   }, [firstName, lastName])
-
-  useEffect(() => {
-    console.log(employeeFormData);
-  }, [employeeFormData])
   
 
   return (

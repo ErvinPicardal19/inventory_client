@@ -5,7 +5,6 @@ const useInvetoryServices = () => {
 
    const addNewProduct = async(data) => {
       try {
-         console.log(data);
          const response = await axiosPrivate.post('/inventory', JSON.stringify(data));
 
          return response;

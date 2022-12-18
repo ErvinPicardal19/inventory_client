@@ -11,7 +11,6 @@ const initialState = {
 export const fetchInventoryProducts = createAsyncThunk('products/fetchInventoryProducts', async(args) => {
    try{
       const response = await args.axiosPrivate.get('/inventory');
-      console.log(response);
 
       return response.data;
    } catch(inventoryError) {
@@ -21,7 +20,7 @@ export const fetchInventoryProducts = createAsyncThunk('products/fetchInventoryP
 
 export const addNewInventoryProduct = createAsyncThunk('products/addNewInventoryProduct', async(args) => {
    try {
-      console.log(args.data);
+   
       const response = await args.axiosPrivate.post('/inventory', JSON.stringify(args.data));
       socket.emit("update");
 
@@ -44,7 +43,7 @@ export const deleteInventoryProduct = createAsyncThunk('products/deleteInventory
 });
 
 export const updateInventoryProduct = createAsyncThunk('products/updateInventoryProduct', async(args) => {
-   console.log(args.data);
+
    try {
       const response = await args.axiosPrivate.put(`/inventory/${args.data._id}`, JSON.stringify({...args.data, categoryID: args.data.categoryID.name}));
 
@@ -60,7 +59,7 @@ export const productSlice = createSlice({
    reducers: {
       setInventoryStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
+            
             state.inventoryStatus = action.payload;
          }
       }
@@ -72,7 +71,7 @@ export const productSlice = createSlice({
          })
          .addCase(fetchInventoryProducts.fulfilled, (state, action) => {
             state.inventoryStatus = 'succeeded'
-            console.log(action.payload);
+            
             state.inventoryProducts = action.payload.data;
          })
          .addCase(fetchInventoryProducts.rejected, (state, action) => {
@@ -80,11 +79,10 @@ export const productSlice = createSlice({
             state.inventoryError = action.inventoryError.message;
          })
          .addCase(addNewInventoryProduct.fulfilled, (state, action) => {
-            console.log(action.payload);
+            
             state.inventoryProducts = [...state.inventoryProducts, {...action.payload.data, categoryID: {name: action.payload.categoryName}}]
          })
          .addCase(deleteInventoryProduct.fulfilled, (state, action) => {
-            console.log(action.payload)
             action.payload.forEach((args) => {
                state.inventoryProducts = state.inventoryProducts.filter((val) => val._id !== args._id)
             })

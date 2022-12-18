@@ -43,13 +43,11 @@ export const deleteOrder = createAsyncThunk('orders/deleteOrder', async(args) =>
 });
 
 export const updateOrder = createAsyncThunk('orders/updateOrder', async(args) => {
-   console.log(args.data);
    try {
       const response = await args.axiosPrivate.put(`/orders/${args.data._id}`, JSON.stringify(args.data));
-      console.log(response);
+      
       return response;
    } catch(error) {
-      console.log(error);
       return error.message;
    }
 });
@@ -60,7 +58,6 @@ const orderSlice = createSlice({
    reducers: {
       setOrderStatus: {
          reducer: (state, action) => {
-            console.log(action.payload);
             state.status = action.payload;
          }
       }
@@ -77,7 +74,7 @@ const orderSlice = createSlice({
                let totalPrice = action.payload.data[i].product.price * action.payload.data[i].quantity;
                action.payload.data[i] = {...action.payload.data[i], totalPrice}
             }  
-            console.log(action.payload.data);
+
             state.orders = action.payload.data;
          })
          .addCase(fetchOrders.rejected, (state, action) => {
@@ -89,11 +86,10 @@ const orderSlice = createSlice({
             const totalPrice = action.payload.data.product.price * action.payload.data.quantity;
 
             action.payload.data = {...action.payload.data, totalPrice}
-            console.log(action.payload.data);
+
             state.orders = [...state.orders, action.payload.data]
          })
          .addCase(deleteOrder.fulfilled, (state, action) => {
-            console.log(action.payload)
             action.payload.forEach((args) => {
                state.orders = state.orders.filter((val) => val._id !== args._id)
             })
