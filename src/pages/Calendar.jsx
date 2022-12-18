@@ -96,7 +96,6 @@ const Calendar = () => {
         eventSettings={{dataSource: schedules}}
         actionComplete={dataSourceChanged}
         selectedDate={new Date()}
-        id
       >
         <Inject services={[Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]}/>
       </ScheduleComponent>

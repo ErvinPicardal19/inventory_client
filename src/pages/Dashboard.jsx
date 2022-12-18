@@ -21,7 +21,6 @@ const Dashboard = () => {
       });
 
       socket.on('updateReply', (args) => {
-        console.log("New: ",args);
         setItemsNo(args);
       })
 

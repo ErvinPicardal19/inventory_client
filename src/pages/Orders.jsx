@@ -54,13 +54,11 @@ const Orders = () => {
 
   useEffect(() => {
     try{
-      console.log(inventoryStatus);
       dispatch(fetchOrders({axiosPrivate}));
       dispatch(fetchCustomers({axiosPrivate}));
       dispatch(fetchInventoryProducts({axiosPrivate}));
 
    } catch(err) {
-      console.error(err);
       navigate('/login', {state: {from: location}, replace: true});
    }
   }, []);
@@ -73,12 +71,7 @@ const Orders = () => {
     setOrders([...fetchedOrders]);
   }, [fetchedOrders])
 
-  useEffect(() => {
-    console.log(products);
-  }, [products])
-
   const toolbarClick = (args) => {
-      console.log(args.item.id)
       if (grid && args.item.id === 'gridcomp_pdfexport') {
           grid.pdfExport();
       }
