@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route,  } from 'react-router-dom';
 import {Layout, RequireAuth, PersistLogin} from '../common/components';
 
-import { Dashboard, Orders, Calendar, Employees, Customers, Kanban, Missing, Login, Inventory} from '../pages';
+import { Dashboard, Orders, Calendar, Employees, Customers, Missing, Login, Inventory} from '../pages';
 
 import './App.css'
 
