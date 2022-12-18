@@ -8,8 +8,6 @@ import { socket } from '../common/api/socket';
 import useAxiosPrivate from '../common/hooks/useAxiosPrivate';
 // import { socket } from '../common/api/socket';
 
-// const socket = io.connect("http://localhost:5500")
-
 const Dashboard = () => {
   const {currentColor} = useStateContext();
   const inventoryProducts = useSelector((state) => state.product.inventoryProducts.payload)
