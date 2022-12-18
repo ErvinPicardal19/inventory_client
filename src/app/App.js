@@ -26,7 +26,6 @@ const Main = () => {
                   <Route path='inventory' element={<Inventory/>}/>
 
                   {/* Apps */}
-                  <Route path='kanban' element={<Kanban/>}/>
                   <Route path='calendar' element={<Calendar/>}/> 
 
                   {/* 404 */}
